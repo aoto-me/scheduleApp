@@ -3,24 +3,58 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@fullcalendar/core": "^6.1.11",
+    "@fullcalendar/daygrid": "^6.1.11",
+    "@fullcalendar/interaction": "^6.1.11",
+    "@fullcalendar/react": "^6.1.11",
+    "@hookform/resolvers": "^3.3.4",
+    "@mui/icons-material": "^5.15.14",
+    "@mui/lab": "^5.0.0-alpha.170",
+    "@mui/material": "^5.15.14",
+    "@mui/system": "^5.15.15",
+    "@mui/utils": "^5.15.14",
+    "@mui/x-data-grid": "^7.1.0",
+    "@mui/x-date-pickers": "^7.1.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^16.18.91",
     "@types/react": "^18.2.67",
     "@types/react-dom": "^18.2.22",
+    "axios": "^1.6.8",
+    "chart.js": "^4.4.2",
+    "date-fns": "^3.6.0",
+    "highlight.js": "^11.9.0",
+    "js-cookie": "^3.0.5",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.51.1",
+    "react-markdown": "^9.0.1",
+    "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
+    "regenerator-runtime": "^0.14.1",
+    "rehype-highlight": "^7.0.0",
+    "remark-gfm": "^4.0.0",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "uuid": "^9.0.1",
+    "web-vitals": "^2.1.4",
+    "zod": "^3.22.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --write src",
+    "lint": "eslint --fix src",
+    "fix": "npm run format && npm run lint"
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +73,16 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.8",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "prettier": "^3.2.5"
   }
 }

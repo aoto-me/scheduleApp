@@ -1,0 +1,439 @@
+:root {
+  --fc-small-font-size: 0.85em;
+  --fc-page-bg-color: #fff;
+  --fc-neutral-bg-color: hsla(0, 0%, 82%, 0.3);
+  --fc-neutral-text-color: grey;
+  --fc-border-color: #dddddd;
+  --fc-button-text-color: #404040;
+  --fc-button-bg-color: transparent;
+  --fc-button-border-color: #555555;
+  --fc-button-hover-bg-color: #00000024;
+  --fc-button-hover-border-color: #555555;
+  --fc-button-active-bg-color: #00000024;
+  --fc-button-active-border-color: #555555;
+  --fc-event-bg-color: #3788d8;
+  --fc-event-border-color: #3788d8;
+  --fc-event-text-color: #333;
+  --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
+  --fc-more-link-bg-color: #d0d0d0;
+  --fc-more-link-text-color: inherit;
+  --fc-event-resizer-thickness: 8px;
+  --fc-event-resizer-dot-total-width: 8px;
+  --fc-event-resizer-dot-border-width: 1px;
+  --fc-non-business-color: #f2f2f2;
+  --fc-bg-event-color: #f2f2f2;
+  --fc-bg-event-opacity: 0.3;
+  --fc-highlight-color: rgba(188, 232, 241, 0.3);
+  --fc-today-bg-color: rgba(255, 220, 40, 0.15);
+  --fc-now-indicator-color: red;
+}
+
+/* カレンダーの幅最大値 */
+.fc.fc-media-screen {
+  max-width: 1048px;
+  padding: 24px;
+}
+
+@media screen and (max-width: 1200px) {
+  .fc.fc-media-screen {
+    padding: 32px 24px 24px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .fc.fc-media-screen {
+    padding: 24px 0 24px 0;
+  }
+}
+
+.fc-header-toolbar,
+.fc-view-harness,
+.fc-col-header,
+.fc-daygrid-body,
+.fc-scrollgrid-sync-table {
+  width: 100%;
+}
+
+/* カレンダーを中央に表示 */
+.fc.fc-media-screen.fc-direction-ltr.fc-theme-standard {
+  align-items: center;
+}
+
+/* headerの設定 */
+.fc-scrollgrid-section.fc-scrollgrid-section-header.fc-scrollgrid-section-sticky
+  > th {
+  background-image: linear-gradient(
+      180deg,
+      rgba(75, 75, 75, 0.93),
+      rgba(75, 75, 75, 0.93)
+    ),
+    url(/public/img/noise.webp);
+  background-size: auto, 125px;
+  color: #fff;
+}
+
+.fc .fc-scrollgrid-section-sticky > * {
+  position: static !important;
+}
+
+/* カレンダーの背景色 */
+.fc-daygrid-body,
+.fc-day {
+  background-color: transparent;
+}
+
+/* 見出し */
+.fc-toolbar-title {
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  font-family: "Zen Old Mincho", "Times New Roman", "ヒラギノ明朝 ProN",
+    "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Yu Mincho", "游明朝体",
+    "ＭＳ 明朝", "MS Mincho", serif;
+}
+
+.fc-col-header-cell-cushion {
+  font-weight: 400;
+}
+
+/* 各セルの設定 */
+.fc .fc-daygrid-day-frame {
+  height: 100%;
+  min-height: clamp(70px, 12vw, 100px);
+  padding: 4px;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.fc .fc-daygrid-body-natural .fc-daygrid-day-events {
+  margin-bottom: 0;
+}
+
+/* カレンダーの日付の設定*/
+.fc .fc-daygrid-day-number {
+  padding: 0 2px 0 0;
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
+  line-height: 1;
+  color: #777777;
+}
+
+/* カレンダーの日付の設定（今日）*/
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: transparent;
+}
+
+.calendar-todayNum {
+  background: #555555;
+  border-radius: 999px;
+  width: clamp(1.1rem, 2.6vw, 1.5rem);
+  height: clamp(1.1rem, 2.6vw, 1.5rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -2px;
+  margin-right: -3px;
+}
+.calendar-todayNum > span {
+  display: inline-block;
+  color: white;
+  line-height: 1;
+  font-size: clamp(0.55rem, 1.4vw, 0.75rem);
+  text-align: center;
+}
+
+/* eventのaタグ */
+.fc-h-event {
+  background-color: transparent;
+  border: none;
+  pointer-events: none;
+  text-align: right;
+  margin: 0;
+}
+
+/*祝日名のテキスト*/
+.calendar-holidayName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #8b8b8b;
+  padding: 3px 1rem 5px 5px;
+  font-size: clamp(0.6rem, 1.7vw, 0.8rem);
+}
+
+@media screen and (min-width: 700px) {
+  .calendar-holidayName {
+    padding: 3px min(3vw, 1.7rem) 5px 5px;
+  }
+}
+
+/* 土日の背景色 */
+.fc .fc-bg-event.holiday {
+  opacity: 1;
+}
+
+/* 透過を0にしたせいで、土日の背景色にイベントや日付が隠れるので調整 */
+.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+  position: relative;
+  z-index: 3;
+}
+
+.fc .fc-day-other .fc-daygrid-day-top {
+  position: relative;
+  z-index: 3;
+}
+
+/* セル内のイベント表示の設定 */
+.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  margin-top: 4px;
+}
+
+/* TODOイベントの設定 */
+.fc-event.fc-daygrid-event.fc-daygrid-block-event.todo {
+  border-radius: 2px;
+  padding: 2px 4px;
+  line-height: 1.25;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  text-align: left;
+  margin: 0;
+  margin-bottom: 3px;
+  font-weight: 500;
+}
+
+.fc-event.fc-daygrid-event.fc-daygrid-block-event.todo.work {
+  background-color: #ebcfcf;
+}
+
+.fc-event.fc-daygrid-event.fc-daygrid-block-event.todo.private {
+  background-color: #bad0e5;
+}
+
+.fc-event.fc-daygrid-event.fc-daygrid-block-event.todo.routine {
+  background-color: #c1dbd9;
+}
+
+.fc-event.fc-daygrid-event.fc-daygrid-block-event.todo.completed.work {
+  text-decoration: line-through;
+  text-decoration-color: #923535;
+}
+
+.fc-event.fc-daygrid-event.fc-daygrid-block-event.todo.completed.private.private {
+  text-decoration: line-through;
+  text-decoration-color: #364b7b;
+}
+
+.fc-event.fc-daygrid-event.fc-daygrid-block-event.todo.completed.routine {
+  text-decoration: line-through;
+  text-decoration-color: #235658;
+}
+
+.fc-event.fc-daygrid-event.fc-daygrid-block-event.todo > * {
+  word-break: break-all;
+  white-space: break-spaces;
+}
+
+.calendar-todoItem {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/* healthイベントの設定 */
+.calendar-health {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+
+.calendar-health-iconOuter {
+  display: inline-block;
+  width: clamp(1.2rem, 3vw, 1.3rem);
+  height: clamp(1.2rem, 3vw, 1.3rem);
+  border: solid 1px #828282;
+  border-radius: 999px;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2px 0 2px 4px;
+}
+
+.calendar-health-icon {
+  width: 100%;
+  object-fit: contain;
+}
+
+/* 収支の表示の設定 */
+.calendar-income {
+  color: #566e93;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(0.75rem, 2.25vw, 0.9rem);
+  font-weight: 700;
+  text-align: right;
+  line-height: 1.35;
+}
+
+.calendar-expense {
+  color: #bf5c5c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(0.75rem, 2.25vw, 0.9rem);
+  font-weight: 700;
+  text-align: right;
+  line-height: 1.35;
+}
+
+/*ボタンの設定*/
+.fc-button {
+  border-radius: 3px;
+}
+
+.fc-today-button.fc-button.fc-button-primary {
+  font-weight: 500;
+  font-family: "Zen Old Mincho", "Times New Roman", "ヒラギノ明朝 ProN",
+    "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Yu Mincho", "游明朝体",
+    "ＭＳ 明朝", "MS Mincho", serif;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active:focus,
+.fc .fc-button-primary:not(:disabled):active:focus {
+  box-shadow: none;
+}
+
+.fc .fc-button-primary:focus {
+  box-shadow: none;
+}
+
+.fc-prev-button {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+.fc-next-button {
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-left: solid 1px !important;
+}
+
+.fc .fc-button-group > .fc-button:focus {
+  z-index: 0;
+}
+
+.fc .fc-button:disabled {
+  border-color: #c4c4c4;
+  color: #b3b3b3;
+  opacity: 1;
+  box-shadow: none;
+}
+
+.calendar-button-active {
+  background-image: linear-gradient(
+      180deg,
+      rgba(75, 75, 75, 0.93),
+      rgba(75, 75, 75, 0.93)
+    ),
+    url(/public/img/noise.webp);
+  background-size: auto, 125px;
+  color: #fff !important;
+}
+
+.fc-allButton-button,
+.fc-todoButton-button,
+.fc-healthButton-button,
+.fc-moneyButton-button {
+  font-weight: 700 !important;
+  letter-spacing: 0.075em !important;
+  font-size: 0.85rem !important;
+  padding: 0.6rem 1rem !important;
+  font-family: "Zen Old Mincho", "Times New Roman", "ヒラギノ明朝 ProN",
+    "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Yu Mincho", "游明朝体",
+    "ＭＳ 明朝", "MS Mincho", serif !important;
+  overflow: hidden;
+}
+
+.calendar-filter-buttons > .fc-button {
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+.calendar-filter-buttons > .fc-button:not(:first-child) {
+  border-left: none;
+}
+
+.calendar-filter-buttons > .fc-button:first-child {
+  border-top-left-radius: 3px !important;
+  border-bottom-left-radius: 3px !important;
+}
+
+.calendar-filter-buttons > .fc-button:last-child {
+  border-top-right-radius: 3px !important;
+  border-bottom-right-radius: 3px !important;
+}
+
+/* toolbarのレスポンシブ */
+.fc-header-toolbar.fc-toolbar {
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0 1.5rem;
+  margin-bottom: 0 !important;
+}
+
+@media screen and (max-width: 600px) {
+  .fc-header-toolbar.fc-toolbar {
+    padding: 2.5rem min(4vw, 1.5rem) 1.5rem min(4vw, 1.5rem);
+  }
+}
+
+.fc-header-toolbar.fc-toolbar > .fc-toolbar-chunk + .fc-toolbar-chunk {
+  margin-top: 0.85rem;
+}
+
+@media screen and (min-width: 550px) {
+  .fc-header-toolbar.fc-toolbar {
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .fc-header-toolbar.fc-toolbar > .fc-toolbar-chunk + .fc-toolbar-chunk {
+    margin-top: 0;
+  }
+}
+
+@media screen and (min-width: 550px) and (max-width: 750px) {
+  .fc-header-toolbar.fc-toolbar > .fc-toolbar-chunk:first-child {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media screen and (min-width: 900px) and (max-width: 1024px) {
+  .fc-header-toolbar.fc-toolbar > .fc-toolbar-chunk:first-child {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* カレンダーのレスポンシブ */
+@media screen and (max-width: 600px) {
+  .fc-scrollgrid {
+    min-width: 600px;
+    overflow: auto;
+  }
+
+  .fc-dayGridMonth-view.fc-view.fc-daygrid {
+    width: calc(100vw - 20px);
+    padding: 0 calc(5vw - 10px);
+    overflow: auto;
+    margin: 0 auto;
+  }
+}

@@ -1,38 +1,66 @@
-.App {
-  text-align: center;
+* {
+  word-break: break-all;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* マウスクリック時 */
+:focus:not(:fous-visible) {
+  outline: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* タブ移動時 */
+:focus-visible {
+  outline: 2px solid #333;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#root {
+  background-image: linear-gradient(
+      180deg,
+      rgba(247, 244, 240, 0.93),
+      rgba(247, 244, 240, 0.93)
+    ),
+    url(/public/img/noise.webp);
+  background-size: auto, 125px;
 }
 
-.App-link {
-  color: #61dafb;
+.font-serif {
+  font-family: "Zen Old Mincho", "Times New Roman", "ヒラギノ明朝 ProN",
+    "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Yu Mincho", "游明朝体",
+    "ＭＳ 明朝", "MS Mincho", serif !important;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.bgBlack {
+  background-image: linear-gradient(
+      180deg,
+      rgba(75, 75, 75, 0.93),
+      rgba(75, 75, 75, 0.93)
+    ),
+    url(/public/img/noise.webp);
+  background-size: auto, 125px;
+}
+
+.contentBox {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  border: solid 1px #ccc;
+}
+
+.active .MuiSvgIcon-root,
+.active .MuiListItemText-root {
+  color: #fff;
+  filter: none;
+}
+
+.table-ul {
+  padding-left: 1rem;
+  margin: 0;
+}
+
+.table-ul li::marker {
+  color: #888888;
+  font-size: 1rem;
+}
+
+.table-ul li + li {
+  margin-top: 0.5rem;
 }
