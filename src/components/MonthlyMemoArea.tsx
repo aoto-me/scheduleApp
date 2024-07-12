@@ -110,6 +110,17 @@ export default function MonthlyMemoArea({ pageType }: MonthlyMemoAreaProps) {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const target = e.target as HTMLInputElement;
+      const start = target.selectionStart ?? 0;
+      const end = target.selectionEnd ?? 0;
+      const newValue = `${target.value.substring(0, start)}\t${target.value.substring(end)}`;
+      target.value = newValue;
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -142,6 +153,9 @@ export default function MonthlyMemoArea({ pageType }: MonthlyMemoAreaProps) {
                 defaultValue={selectedMonthlyMemoData.memo}
                 onBlur={(e) => onSubmit(e)}
                 autoFocus
+                onKeyDown={(e) => {
+                  handleKeyDown(e);
+                }}
                 sx={{
                   p: "min(4vw,1.5rem)",
                   fontSize: { xs: "0.85rem", md: "1rem" },

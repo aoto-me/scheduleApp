@@ -154,3 +154,12 @@ export type TaskDragHandler = (
 
 export type SectionWithIndex = Section & { index: number };
 export type TaskWithIndex = Todo & { index: number };
+
+// memo
+export interface Memo {
+  id: number;
+  name: string;
+  memo: string;
+  sort: number;
+}
+export interface SendMemo extends Omit<Memo, "id"> {}

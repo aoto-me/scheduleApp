@@ -13,12 +13,14 @@ import {
   Section,
   TimeTaken,
   Todo,
+  Memo,
 } from "../../types";
 import { useCommonContext } from "../../context/CommonContext";
 import { useMoneyContext } from "../../context/MoneyContext";
 import { useTodoContext } from "../../context/TodoContext";
 import { useHealthContext } from "../../context/HealthContext";
 import { useProjectContext } from "../../context/ProjectContext";
+import { useMemoContext } from "../../context/MemoContext";
 
 interface AppLayoutProps {
   responseUserId: string;
@@ -53,6 +55,7 @@ function AppLayout({
   } = useProjectContext();
   const { setMoneyData, setIsMoneyLoading } = useMoneyContext();
   const { setHealthData, setIsHealthLoading } = useHealthContext();
+  const { setMemoData, setIsMemoLoading } = useMemoContext();
   const {
     userId,
     csrfToken,
@@ -165,6 +168,18 @@ function AppLayout({
     );
   };
 
+  // Memoデータの取得
+  const getMemoData = (tableType: string) => {
+    fetchData<Memo>(
+      process.env.REACT_APP_GET_API,
+      userId,
+      csrfToken,
+      tableType,
+      setMemoData,
+      setIsMemoLoading,
+    );
+  };
+
   useEffect(() => {
     if (userId === "" || csrfToken === "") return;
     getMoneyData("money");
@@ -174,6 +189,7 @@ function AppLayout({
     getProjectData("project");
     getSectionData("section");
     getMonthlyMemoData("monthlyMemo");
+    getMemoData("memo");
   }, [userId, csrfToken]);
 
   // Drawerの開閉

@@ -117,6 +117,7 @@
   text-decoration: underline;
 }
 
+.markdown li > code,
 .markdown p > code {
   border-radius: 2px;
   padding: 0.25rem;

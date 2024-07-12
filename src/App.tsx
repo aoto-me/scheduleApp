@@ -20,9 +20,11 @@ import Todo from "./pages/Todo";
 import Project from "./pages/Project";
 import Money from "./pages/Money";
 import Home from "./pages/Home";
+import Memo from "./pages/Memo";
 import Search from "./pages/Search";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import { MemoContextProvider } from "./context/MemoContext";
 
 interface ResponseData {
   success: boolean;
@@ -102,62 +104,68 @@ function App() {
         <ProjectContextProvider>
           <MoneyContextProvider>
             <HealthContextProvider>
-              <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <BrowserRouter>
-                  <Routes>
-                    <Route
-                      path="/login"
-                      element={
-                        <Login
-                          loginAuth={loginAuth}
-                          setLoginAuth={setLoginAuth}
+              <MemoContextProvider>
+                <ThemeProvider theme={theme}>
+                  <CssBaseline />
+                  <BrowserRouter>
+                    <Routes>
+                      <Route
+                        path="/login"
+                        element={
+                          <Login
+                            loginAuth={loginAuth}
+                            setLoginAuth={setLoginAuth}
+                          />
+                        }
+                      />
+                      <Route
+                        path="/"
+                        element={
+                          <AppLayout
+                            responseUserId={responseUserId}
+                            responseCsrfToken={responseCsrfToken}
+                            setResponseUserId={setResponseUserId}
+                            setLoginAuth={setLoginAuth}
+                          />
+                        }
+                      >
+                        <Route
+                          index
+                          element={<RequireAuth component={<Home />} />}
                         />
-                      }
-                    />
-                    <Route
-                      path="/"
-                      element={
-                        <AppLayout
-                          responseUserId={responseUserId}
-                          responseCsrfToken={responseCsrfToken}
-                          setResponseUserId={setResponseUserId}
-                          setLoginAuth={setLoginAuth}
+                        <Route
+                          path="/todo"
+                          element={<RequireAuth component={<Todo />} />}
                         />
-                      }
-                    >
-                      <Route
-                        index
-                        element={<RequireAuth component={<Home />} />}
-                      />
-                      <Route
-                        path="/todo"
-                        element={<RequireAuth component={<Todo />} />}
-                      />
-                      <Route
-                        path="/project"
-                        element={<RequireAuth component={<Project />} />}
-                      />
-                      <Route
-                        path="/money"
-                        element={<RequireAuth component={<Money />} />}
-                      />
-                      <Route
-                        path="/health"
-                        element={<RequireAuth component={<Health />} />}
-                      />
-                      <Route
-                        path="/search"
-                        element={<RequireAuth component={<Search />} />}
-                      />
-                      <Route
-                        path="*"
-                        element={<RequireAuth component={<NotFound />} />}
-                      />
-                    </Route>
-                  </Routes>
-                </BrowserRouter>
-              </ThemeProvider>
+                        <Route
+                          path="/project"
+                          element={<RequireAuth component={<Project />} />}
+                        />
+                        <Route
+                          path="/money"
+                          element={<RequireAuth component={<Money />} />}
+                        />
+                        <Route
+                          path="/health"
+                          element={<RequireAuth component={<Health />} />}
+                        />
+                        <Route
+                          path="/search"
+                          element={<RequireAuth component={<Search />} />}
+                        />
+                        <Route
+                          path="/memo"
+                          element={<RequireAuth component={<Memo />} />}
+                        />
+                        <Route
+                          path="*"
+                          element={<RequireAuth component={<NotFound />} />}
+                        />
+                      </Route>
+                    </Routes>
+                  </BrowserRouter>
+                </ThemeProvider>
+              </MemoContextProvider>
             </HealthContextProvider>
           </MoneyContextProvider>
         </ProjectContextProvider>

@@ -33,13 +33,22 @@ import { formatCurrency } from "../utils/formatting";
 import { calculateTotalTimeTaken } from "../utils/timeTakenCalculations";
 import { TodoTypeIcons } from "../components/common/TodoIcons";
 import MoneyIcons from "../components/common/MoneyIcons";
-import { Health, Money, MonthlyMemo, Project, TimeTaken, Todo } from "../types";
+import {
+  Health,
+  Memo,
+  Money,
+  MonthlyMemo,
+  Project,
+  TimeTaken,
+  Todo,
+} from "../types";
 import { useMoneyContext } from "../context/MoneyContext";
 import { useProjectContext } from "../context/ProjectContext";
 import { useHealthContext } from "../context/HealthContext";
 import { useTodoContext } from "../context/TodoContext";
 import { sortDataByDate } from "../utils/sortDataFn";
 import { filterDataBySearchWords } from "../utils/filterDataFn";
+import { useMemoContext } from "../context/MemoContext";
 
 const MonthlyMemoSearch = ({
   searchResult,
@@ -820,6 +829,82 @@ const HealthSearch = ({ searchResult }: { searchResult: Health[] }) => {
   );
 };
 
+const MemoSearch = ({ searchResult }: { searchResult: Memo[] }) => (
+  <TableContainer className="contentBox">
+    <Box padding={2} display="flex" alignItems="center">
+      <FeedSharpIcon sx={{ mr: 1, color: grey[500] }} />
+      <Typography
+        className="font-serif"
+        fontWeight={700}
+        variant="h6"
+        component="span"
+        mr={3}
+        lineHeight={1}
+      >
+        Memo
+      </Typography>
+      <Typography variant="body1" component="span">
+        {searchResult.length} 件
+      </Typography>
+    </Box>
+
+    <Table sx={{ minWidth: 700 }}>
+      <TableHead>
+        <TableRow>
+          <TableCell
+            sx={{
+              padding: "10px 10px 10px 1rem",
+            }}
+          >
+            メモ名
+          </TableCell>
+          <TableCell
+            sx={{
+              padding: "10px 1rem 10px 10px",
+            }}
+          >
+            メモ
+          </TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {searchResult.map((row, index) => (
+          <TableRow
+            key={index}
+            sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+          >
+            <TableCell
+              component="th"
+              scope="row"
+              sx={{
+                padding: "1rem 0.5rem 1rem 1rem",
+                width: "20%",
+                minWidth: "150px",
+                fontWeight: 500,
+              }}
+            >
+              {row.name}
+            </TableCell>
+            <TableCell
+              align="left"
+              sx={{
+                padding: "1rem 1rem 1rem 0.5rem",
+              }}
+            >
+              {row.memo.split("\n").map((line, memoIndex) => (
+                <React.Fragment key={memoIndex}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              ))}
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+);
+
 const Search = () => {
   const [searchState, setSearchState] = React.useState(false);
   const [searchWord, setSearchWord] = React.useState(""); // 検索結果の表示用
@@ -835,10 +920,13 @@ const Search = () => {
   const [searchHealthResult, setSearchHealthResult] = React.useState<Health[]>(
     [],
   );
+  const [searchMemoResult, setSearchMemoResult] = React.useState<Memo[]>([]);
+
   const { todoData, monthlyMemoData } = useTodoContext();
   const { projectData, sectionData } = useProjectContext();
   const { moneyData } = useMoneyContext();
   const { healthData } = useHealthContext();
+  const { memoData } = useMemoContext();
 
   const handleSearch = () => {
     // 検索ワードをスペースで分割して配列にする
@@ -862,6 +950,7 @@ const Search = () => {
     let searchProjectData = [];
     let searchMoneyData = [];
     let searchHealthData = [];
+    let searchMemoData = [];
 
     // todoData
     const combinedTodoData = todoData.map((data) => {
@@ -899,6 +988,12 @@ const Search = () => {
       };
     });
 
+    // memoData
+    const combinedMemoData = memoData.map((data) => ({
+      ...data,
+      combinedContent: `${data.name} ${data.memo}`,
+    }));
+
     if (searchType === "and") {
       searchMonthlyMemoData = filterDataBySearchWords(
         monthlyMemoData,
@@ -934,6 +1029,13 @@ const Search = () => {
         "combinedContent",
         true,
       );
+
+      searchMemoData = filterDataBySearchWords(
+        combinedMemoData,
+        searchWords,
+        "combinedContent",
+        true,
+      );
     } else {
       // or検索の場合、少なくとも1つの検索ワードが内容またはメモに含まれるデータをフィルタリング
       searchMonthlyMemoData = filterDataBySearchWords(
@@ -965,6 +1067,12 @@ const Search = () => {
         searchWords,
         "combinedContent",
       );
+
+      searchMemoData = filterDataBySearchWords(
+        combinedMemoData,
+        searchWords,
+        "combinedContent",
+      );
     }
 
     const sortedSearchMonthlyMemoData = sortDataByDate(
@@ -982,6 +1090,7 @@ const Search = () => {
     setSearchProjectResult(sortedSearchProjectData);
     setSearchMoneyResult(sortedSearchMoneyData);
     setSearchHealthResult(sortedSearchHealthData);
+    setSearchMemoResult(searchMemoData);
   };
 
   useEffect(() => {
@@ -992,6 +1101,7 @@ const Search = () => {
       setSearchProjectResult([]);
       setSearchMoneyResult([]);
       setSearchHealthResult([]);
+      setSearchMemoResult([]);
     } else {
       handleSearch();
     }
@@ -1060,7 +1170,8 @@ const Search = () => {
         searchTodoResult.length === 0 &&
         searchProjectResult.length === 0 &&
         searchMoneyResult.length === 0 &&
-        searchHealthResult.length === 0 && (
+        searchHealthResult.length === 0 &&
+        searchMemoResult.length === 0 && (
           <Grid item xs={12} mt={4}>
             <Typography variant="body1" align="center">
               該当するデータがありません
@@ -1072,14 +1183,19 @@ const Search = () => {
           <MonthlyMemoSearch searchResult={searchMonthlyMemoResult} />
         </Grid>
       )}
-      {searchTodoResult.length !== 0 && (
+      {searchProjectResult.length !== 0 && (
         <Grid item xs={12}>
-          <TodoSearch searchResult={searchTodoResult} />
+          <ProjectSearch searchResult={searchProjectResult} />
         </Grid>
       )}
       {searchProjectResult.length !== 0 && (
         <Grid item xs={12}>
-          <ProjectSearch searchResult={searchProjectResult} />
+          <MemoSearch searchResult={searchMemoResult} />
+        </Grid>
+      )}
+      {searchTodoResult.length !== 0 && (
+        <Grid item xs={12}>
+          <TodoSearch searchResult={searchTodoResult} />
         </Grid>
       )}
       {searchMoneyResult.length !== 0 && (
