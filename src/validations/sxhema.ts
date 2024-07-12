@@ -121,3 +121,13 @@ export const sectionSchema = z.object({
 });
 // tsの型定義
 export type SectionSchema = z.infer<typeof sectionSchema>;
+
+export const memoSchema = z.object({
+  name: z
+    .string()
+    .min(1, { message: "メモ名を入力してください" })
+    .max(100, { message: "100文字以内で入力してください" }),
+  memo: z.string(),
+});
+// tsの型定義
+export type MemoSchema = z.infer<typeof memoSchema>;

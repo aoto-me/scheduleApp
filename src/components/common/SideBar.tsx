@@ -17,6 +17,7 @@ import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
 import AccessibilityNewSharpIcon from "@mui/icons-material/AccessibilityNewSharp";
 import FormatListBulletedSharpIcon from "@mui/icons-material/FormatListBulletedSharp";
 import FolderSharpIcon from "@mui/icons-material/FolderSharp";
+import FeedSharpIcon from "@mui/icons-material/FeedSharp";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCommonContext } from "../../context/CommonContext";
@@ -59,19 +60,28 @@ const SideBar = ({
       ),
     },
     {
-      text: "Todo",
-      path: "/todo",
+      text: "Project",
+      path: "/project",
       icon: (
-        <FormatListBulletedSharpIcon
+        <FolderSharpIcon
           sx={{ color: "#ffffff82", filter: "drop-shadow(-1px -1px 0px #000)" }}
         />
       ),
     },
     {
-      text: "Project",
-      path: "/project",
+      text: "Memo",
+      path: "/memo",
       icon: (
-        <FolderSharpIcon
+        <FeedSharpIcon
+          sx={{ color: "#ffffff82", filter: "drop-shadow(-1px -1px 0px #000)" }}
+        />
+      ),
+    },
+    {
+      text: "Todo",
+      path: "/todo",
+      icon: (
+        <FormatListBulletedSharpIcon
           sx={{ color: "#ffffff82", filter: "drop-shadow(-1px -1px 0px #000)" }}
         />
       ),

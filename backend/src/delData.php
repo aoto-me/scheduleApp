@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
         validateCsrfToken($_POST['csrfToken']);
 
         // tableTypeが有効な値であることを確認
-        if (!isset($_POST['tableType']) || !in_array($_POST['tableType'], ['todo', 'money', 'health', 'project','section'])) {
+        if (!isset($_POST['tableType']) || !in_array($_POST['tableType'], ['todo', 'money', 'health', 'project','section','memo'])) {
             throw new Exception('Invalid tableType');
         }
 
@@ -50,14 +50,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
         $tableName = $tableType . '_' . $userId;
 
         // テーブル名のホワイトリスト検証
-        if (!preg_match('/^(todo|money|health|project|section)_\d+$/', $tableName)) {
+        if (!preg_match('/^(todo|money|health|project|section|memo)_\d+$/', $tableName)) {
             throw new Exception('Invalid table name');
         }
 
         // トランザクション開始
         $pdo->beginTransaction();
 
-        if($tableType === 'money' || $tableType === 'health' || $tableType === 'section'){
+        if($tableType === 'money' || $tableType === 'health' || $tableType === 'section' || $tableType === 'memo'){
             $stmt = $pdo->prepare("DELETE FROM $tableName WHERE id = ?");
             foreach ($ids as $id) {
                 $stmt->execute([$id]);

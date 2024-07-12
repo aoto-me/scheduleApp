@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // tableTypeが有効な値であることを確認
-            if (!isset($_POST['tableType']) || !in_array($_POST['tableType'], ['todo', 'money', 'health', 'monthlyMemo', 'project', 'section', 'timeTaken'])) {
+            if (!isset($_POST['tableType']) || !in_array($_POST['tableType'], ['todo', 'money', 'health', 'monthlyMemo', 'project', 'section', 'timeTaken', 'memo'])) {
                 throw new Exception('Invalid tableType');
             }
 
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tableName = $tableType . '_' . $userId;
 
             // テーブル名のホワイトリスト検証
-            if (!preg_match('/^(todo|money|health|monthlyMemo|project|section|timeTaken)_\d+$/', $tableName)) {
+            if (!preg_match('/^(todo|money|health|monthlyMemo|project|section|timeTaken|memo)_\d+$/', $tableName)) {
                 throw new Exception('Invalid table name');
             }
 
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             // memoに対して、htmlspecialchars_decode() を適用
-            if (in_array($tableType, ['todo', 'health', 'project', 'section', 'monthlyMemo'])) {
+            if (in_array($tableType, ['todo', 'health', 'project', 'section', 'monthlyMemo','memo'])) {
                 foreach ($result as &$row) {
                     if (isset($row['memo'])) {
                         $row['memo'] = htmlspecialchars_decode($row['memo'], ENT_QUOTES);
