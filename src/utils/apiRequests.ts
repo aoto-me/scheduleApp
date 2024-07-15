@@ -1,5 +1,12 @@
 import axios from "axios";
-import { ResponseData } from "../types";
+import { Memo, MonthlyMemo, Project, ResponseData } from "../types";
+import { base64Decode } from "./formatting";
+
+// メモがある型かどうかを確認するための型ガード
+const isMemoContent = <T>(
+  item: T | Project | Memo | MonthlyMemo,
+): item is Project | Memo | MonthlyMemo =>
+  (item as Project | Memo | MonthlyMemo).memo !== undefined;
 
 export const fetchData = <T>(
   apiUrl: string | undefined,
@@ -25,7 +32,22 @@ export const fetchData = <T>(
     }>(apiUrl, urlSearchParams, { withCredentials: true })
     .then((response) => {
       if (response.data.success) {
-        setData(response.data.data as T[]);
+        // tableTypeがproject,memo,monthlyMemoの場合は、各データのmemo要素をデコードしてから格納する
+        const hasMemoTableTypes = ["project", "memo", "monthlyMemo"];
+        if (hasMemoTableTypes.includes(tableType)) {
+          const decodedData = response.data.data?.map((item) => {
+            if (isMemoContent(item)) {
+              return {
+                ...item,
+                memo: base64Decode(item.memo), // memoをデコード
+              };
+            }
+            return item;
+          });
+          setData(decodedData as T[]);
+        } else {
+          setData(response.data.data as T[]);
+        }
       } else {
         console.error(response.data.error);
       }

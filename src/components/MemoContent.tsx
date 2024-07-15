@@ -11,6 +11,7 @@ import "../styles/Markdown.css";
 import { sendRequest } from "../utils/apiRequests";
 import { useCommonContext } from "../context/CommonContext";
 import { useMemoContext } from "../context/MemoContext";
+import { base64Encode } from "../utils/formatting";
 
 const fontSerif: CSSProperties = {
   fontFamily:
@@ -24,9 +25,16 @@ const useMemoUpdate = () => {
   const updateMemo = async (type: string, value: string | number) => {
     const apiUrl = process.env.REACT_APP_MEMO_API;
     const urlSearchParams = new URLSearchParams();
+    let memoValue = "";
+    if (type === "memo") {
+      memoValue = base64Encode(value.toString());
+    }
     urlSearchParams.append("id", selectedMemoData?.id.toString() || "");
     urlSearchParams.append("type", type);
-    urlSearchParams.append(type, value.toString());
+    urlSearchParams.append(
+      type,
+      type === "memo" ? memoValue : value.toString(),
+    );
     urlSearchParams.append("userId", userId);
     urlSearchParams.append("csrfToken", csrfToken);
     urlSearchParams.append("action", "update");

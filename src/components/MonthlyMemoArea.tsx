@@ -17,6 +17,7 @@ import { useCommonContext } from "../context/CommonContext";
 import { useTodoContext } from "../context/TodoContext";
 import { MonthlyMemo } from "../types";
 import { sendRequest } from "../utils/apiRequests";
+import { base64Encode } from "../utils/formatting";
 
 interface MonthlyMemoAreaProps {
   pageType: string;
@@ -60,7 +61,7 @@ export default function MonthlyMemoArea({ pageType }: MonthlyMemoAreaProps) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append("id", selectedMonthlyMemoData.id.toString());
     urlSearchParams.append("date", selectedMonthlyMemoData.date.toString());
-    urlSearchParams.append("memo", text);
+    urlSearchParams.append("memo", base64Encode(text.toString()));
     urlSearchParams.append("userId", userId);
     urlSearchParams.append("csrfToken", csrfToken);
     urlSearchParams.append("action", "update");
@@ -83,7 +84,7 @@ export default function MonthlyMemoArea({ pageType }: MonthlyMemoAreaProps) {
     const apiUrl = process.env.REACT_APP_MONTHLYMEMO_API;
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append("date", selectedMonthlyMemoData.date);
-    urlSearchParams.append("memo", text);
+    urlSearchParams.append("memo", base64Encode(text.toString()));
     urlSearchParams.append("userId", userId);
     urlSearchParams.append("csrfToken", csrfToken);
     urlSearchParams.append("action", "save");
