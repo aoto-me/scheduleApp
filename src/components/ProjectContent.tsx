@@ -404,7 +404,7 @@ function ProjectContent() {
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeHighlight]}
             >
-              {selectedProjectData?.memo}
+              {selectedProjectData?.memo.replace(/\n/g, "  \n")}
             </ReactMarkdown>
             <IconButton
               aria-label="メモを編集する"
