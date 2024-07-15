@@ -2,6 +2,7 @@
 /node_modules
 /backend/vendor
 /backend/src/test
+/backend/.htaccess
 /.pnp
 .pnp.js
 
