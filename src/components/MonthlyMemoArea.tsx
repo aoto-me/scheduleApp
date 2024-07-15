@@ -183,7 +183,7 @@ export default function MonthlyMemoArea({ pageType }: MonthlyMemoAreaProps) {
                   remarkPlugins={[remarkGfm]}
                   rehypePlugins={[rehypeHighlight]}
                 >
-                  {selectedMonthlyMemoData.memo}
+                  {selectedMonthlyMemoData.memo.replace(/\n/g, "  \n")}
                 </ReactMarkdown>
                 <IconButton
                   aria-label="メモを編集する"

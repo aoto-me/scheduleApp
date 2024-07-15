@@ -1188,7 +1188,7 @@ const Search = () => {
           <ProjectSearch searchResult={searchProjectResult} />
         </Grid>
       )}
-      {searchProjectResult.length !== 0 && (
+      {searchMemoResult.length !== 0 && (
         <Grid item xs={12}>
           <MemoSearch searchResult={searchMemoResult} />
         </Grid>

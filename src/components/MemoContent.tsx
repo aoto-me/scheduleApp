@@ -233,7 +233,7 @@ function MemoContent() {
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeHighlight]}
             >
-              {selectedMemoData?.memo}
+              {selectedMemoData?.memo.replace(/\n/g, "  \n")}
             </ReactMarkdown>
             <IconButton
               aria-label="メモを編集する"
