@@ -27,6 +27,7 @@ import { useCommonContext } from "../context/CommonContext";
 import { useProjectContext } from "../context/ProjectContext";
 import { useTodoContext } from "../context/TodoContext";
 import ProjectBarChart from "./ProjectBarChart";
+import { base64Encode } from "../utils/formatting";
 
 const fontSerif: CSSProperties = {
   fontFamily:
@@ -37,13 +38,19 @@ const useProjectUpdate = () => {
   const { userId, csrfToken } = useCommonContext();
   const { projectData, setProjectData, selectedProjectData } =
     useProjectContext();
-
   const updateProject = async (type: string, value: string | number) => {
     const apiUrl = process.env.REACT_APP_PROJECT_API;
     const urlSearchParams = new URLSearchParams();
+    let memoValue = "";
+    if (type === "memo") {
+      memoValue = base64Encode(value.toString());
+    }
     urlSearchParams.append("id", selectedProjectData?.id.toString() || "");
     urlSearchParams.append("type", type);
-    urlSearchParams.append(type, value.toString());
+    urlSearchParams.append(
+      type,
+      type === "memo" ? memoValue : value.toString(),
+    );
     urlSearchParams.append("userId", userId);
     urlSearchParams.append("csrfToken", csrfToken);
     urlSearchParams.append("action", "update");

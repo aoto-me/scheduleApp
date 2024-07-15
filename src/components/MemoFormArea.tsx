@@ -17,6 +17,7 @@ import { memoSchema, MemoSchema } from "../validations/sxhema";
 import { sendRequest } from "../utils/apiRequests";
 import { Memo, SendMemo } from "../types";
 import { useMemoContext } from "../context/MemoContext";
+import { base64Encode } from "../utils/formatting";
 
 const AddMemoForm = () => {
   const { userId, csrfToken } = useCommonContext();
@@ -44,7 +45,12 @@ const AddMemoForm = () => {
     const urlSearchParams = new URLSearchParams();
     Object.keys(data).forEach((key) => {
       const val = data[key as keyof SendMemo];
-      urlSearchParams.append(key, val?.toString() || "");
+      urlSearchParams.append(
+        key,
+        key === "memo"
+          ? base64Encode(val.toString()) || ""
+          : val?.toString() || "",
+      );
     });
     urlSearchParams.append("userId", userId);
     urlSearchParams.append("csrfToken", csrfToken);

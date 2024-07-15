@@ -17,6 +17,7 @@ import { ProjectSchema, projectSchema } from "../validations/sxhema";
 import { sendRequest } from "../utils/apiRequests";
 import { Project, SendProject } from "../types";
 import { useProjectContext } from "../context/ProjectContext";
+import { base64Encode } from "../utils/formatting";
 
 const AddProjectForm = () => {
   const { userId, csrfToken } = useCommonContext();
@@ -46,7 +47,12 @@ const AddProjectForm = () => {
     const urlSearchParams = new URLSearchParams();
     Object.keys(data).forEach((key) => {
       const val = data[key as keyof SendProject];
-      urlSearchParams.append(key, val?.toString() || "");
+      urlSearchParams.append(
+        key,
+        key === "memo"
+          ? base64Encode(val.toString()) || ""
+          : val?.toString() || "",
+      );
     });
     urlSearchParams.append("userId", userId);
     urlSearchParams.append("csrfToken", csrfToken);
